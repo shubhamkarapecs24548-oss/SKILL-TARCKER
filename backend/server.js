@@ -25,9 +25,28 @@ connectDB();
 const app = express();
 
 // Middleware
+// Relaxed CORS for production to ensure Vercel can connect easily
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:4200',
+  'https://skill-tarcker.vercel.app'
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:4200',
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is allowed or is a subdomain of vercel.app
+    if (allowedOrigins.includes(origin) || (origin.endsWith('.vercel.app') && origin.includes('skill-tarcker'))) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
