@@ -1,0 +1,55 @@
+<div class="fade-in-up pb-10">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 flex items-center">
+        🏆 Achievements
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400 mt-1">Unlock badges as you progress in your journey</p>
+    </div>
+    
+    <div *ngIf="achievementsData" class="flex gap-4">
+      <div class="bg-caramel-100 dark:bg-dark-card border border-caramel-200 dark:border-dark-border px-4 py-2 rounded-xl flex items-center shadow-sm">
+        <span class="text-2xl mr-2">🔥</span>
+        <div>
+          <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Current Streak</p>
+          <p class="text-lg font-black text-caramel-600">{{ achievementsData.streak }} Days</p>
+        </div>
+      </div>
+      <div class="bg-gray-100 dark:bg-dark-card border border-gray-200 dark:border-dark-border px-4 py-2 rounded-xl flex items-center shadow-sm">
+        <span class="text-2xl mr-2">⭐</span>
+        <div>
+          <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Longest Streak</p>
+          <p class="text-lg font-black text-gray-700 dark:text-gray-200">{{ achievementsData.longestStreak }} Days</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="flex justify-center p-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-caramel-500"></div>
+  </div>
+
+  <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    
+    <div *ngFor="let badge of allBadges" class="card relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+         [ngClass]="hasBadge(badge) ? badgesMap[badge].color : 'bg-gray-50 dark:bg-dark-border opacity-70 grayscale'">
+      <div class="p-6 text-center">
+        <div class="text-6xl mb-4 transform transition-transform" [ngClass]="{'scale-110': hasBadge(badge)}">{{ badgesMap[badge].icon }}</div>
+        <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white" [ngClass]="{'text-opacity-60': !hasBadge(badge)}">{{ badge }}</h3>
+        <p class="text-sm opacity-80 mb-4 h-10">{{ badgesMap[badge].desc }}</p>
+        
+        <div class="mt-auto pt-4 border-t border-black border-opacity-10">
+          <span *ngIf="hasBadge(badge)" class="text-xs font-bold uppercase tracking-wider flex justify-center items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+            Unlocked {{ getBadgeDate(badge) | date:'shortDate' }}
+          </span>
+          <span *ngIf="!hasBadge(badge)" class="text-xs font-bold uppercase tracking-wider flex justify-center items-center text-gray-500">
+             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+             Locked
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="h-full flex flex-col pt-5 pb-4 overflow-y-auto w-full">
+  <div class="flex items-center flex-shrink-0 px-6 mb-8">
+    <span class="text-2xl font-bold text-caramel-600 dark:text-caramel-400">SkillTracker</span>
+  </div>
+  <nav class="mt-2 flex-1 px-4 space-y-2">
+    <!-- Normal User Links -->
+    <ng-container *ngIf="!authService.isAdmin()">
+      <a routerLink="/dashboard" routerLinkActive="bg-caramel-200 text-caramel-800" class="text-gray-600 dark:text-gray-300 hover:bg-caramel-100 dark:hover:bg-dark-border group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all">
+        <span class="mr-3">📊</span> Dashboard
+      </a>
+      <a routerLink="/skills" routerLinkActive="bg-caramel-200 text-caramel-800" class="text-gray-600 dark:text-gray-300 hover:bg-caramel-100 dark:hover:bg-dark-border group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all">
+        <span class="mr-3">🚀</span> My Skills
+      </a>
+      <a routerLink="/goals" routerLinkActive="bg-caramel-200 text-caramel-800" class="text-gray-600 dark:text-gray-300 hover:bg-caramel-100 dark:hover:bg-dark-border group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all">
+        <span class="mr-3">🎯</span> Goals & Roadmap
+      </a>
+      <a routerLink="/achievements" routerLinkActive="bg-caramel-200 text-caramel-800" class="text-gray-600 dark:text-gray-300 hover:bg-caramel-100 dark:hover:bg-dark-border group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all">
+        <span class="mr-3">🏆</span> Achievements
+      </a>
+    </ng-container>
+
+    <!-- Admin Only Links -->
+    <hr class="my-4 border-gray-100 dark:border-dark-border" *ngIf="authService.isAdmin()">
+    <a *ngIf="authService.isAdmin()" routerLink="/admin" routerLinkActive="bg-red-100 text-red-800" class="text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-dark-border group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all border border-transparent hover:border-red-200">
+      <span class="mr-3">🛡️</span> Admin Panel
+    </a>
+    <a *ngIf="authService.isAdmin()" routerLink="/admin/users" routerLinkActive="bg-red-100 text-red-800" class="text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-dark-border group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all border border-transparent hover:border-red-200">
+      <span class="mr-3">👥</span> User Management
+    </a>
+  </nav>
+
+  <div class="px-4 pb-6 mt-auto" *ngIf="!authService.isAdmin()">
+    <div class="bg-caramel-100 dark:bg-dark-border rounded-xl p-4 cursor-pointer" routerLink="/skills/new">
+      <p class="text-sm font-semibold text-caramel-700 dark:text-caramel-400 text-center">+ Add New Skill</p>
+    </div>
+  </div>
+</div>

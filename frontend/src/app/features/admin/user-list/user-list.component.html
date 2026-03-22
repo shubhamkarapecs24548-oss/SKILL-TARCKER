@@ -1,0 +1,48 @@
+<div class="fade-in-up pb-10">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 flex items-center">
+      🛡️ User Management
+    </h1>
+    <p class="text-gray-600 dark:text-gray-400 mt-1">Manage platform users and permissions</p>
+  </div>
+
+  <div *ngIf="loading" class="flex justify-center p-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-caramel-500"></div>
+  </div>
+
+  <div *ngIf="!loading" class="card overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="bg-gray-50 dark:bg-dark-bg border-b border-gray-100 dark:border-dark-border">
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Name</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Email</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Joined</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Role</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 dark:divide-dark-border">
+          <tr *ngFor="let user of users" class="hover:bg-gray-50 dark:hover:bg-dark-border transition-colors group">
+            <td class="px-6 py-4">
+               <div class="font-bold text-gray-900 dark:text-white">{{user.name}}</div>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">{{user.email}}</td>
+            <td class="px-6 py-4 text-xs text-gray-500">{{user.createdAt | date}}</td>
+            <td class="px-6 py-4">
+               <select [ngModel]="user.role" (change)="changeRole(user, roleSelect.value)" #roleSelect class="text-xs font-bold py-1 px-3 rounded-full border border-gray-100 dark:bg-dark-bg dark:border-dark-border focus:ring-1 focus:ring-caramel-500 outline-none" [ngClass]="{'bg-blue-50 text-blue-700': user.role === 'Admin', 'bg-gray-50 text-gray-700': user.role === 'User'}">
+                 <option value="User">User</option>
+                 <option value="Admin">Admin</option>
+               </select>
+            </td>
+            <td class="px-6 py-4">
+               <button (click)="deleteUser(user)" class="text-red-400 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-600 p-1">
+                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+               </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

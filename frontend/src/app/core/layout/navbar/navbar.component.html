@@ -1,0 +1,72 @@
+<header class="bg-white dark:bg-dark-card shadow-sm border-b border-gray-100 dark:border-dark-border z-10 w-full relative">
+  <div class="px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      
+      <!-- Mobile menu button -->
+      <div class="flex items-center md:hidden">
+        <span class="text-xl font-bold text-caramel-600 dark:text-caramel-400 mr-4">ST</span>
+        <button type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-caramel-500 rounded-md">
+          <span class="sr-only">Open main menu</span>
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-1 flex justify-between items-center w-full">
+        <!-- Optional search or title -->
+        <div class="flex-1 flex hidden md:flex">
+          <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Welcome{{authService.currentUser()?.name ? ', ' + authService.currentUser().name : ''}}!</h2>
+        </div>
+
+        <div class="ml-4 flex items-center md:ml-6" *ngIf="authService.currentUser()">
+          
+          <button (click)="toggleDarkMode()" class="p-2 mr-2 text-caramel-500 hover:text-caramel-600 rounded-full hover:bg-caramel-100 dark:hover:bg-dark-border transition duration-200">
+            <span class="sr-only">Toggle Dark Mode</span>
+            <svg class="h-6 w-6 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            <svg class="h-6 w-6 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          </button>
+
+          <button class="p-2 text-caramel-500 hover:text-caramel-600 rounded-full hover:bg-caramel-100 dark:hover:bg-dark-border transition duration-200">
+            <span class="sr-only">View notifications</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+          </button>
+
+          <!-- Profile dropdown -->
+          <div class="ml-3 relative">
+            <div>
+              <button (click)="toggleMenu()" class="flex max-w-xs items-center text-sm rounded-full bg-caramel-200 focus:outline-none focus:ring-2 focus:ring-caramel-500 focus:ring-offset-2">
+                <span class="sr-only">Open user menu</span>
+                <div class="h-9 w-9 rounded-full bg-caramel-400 flex items-center justify-center text-white font-bold shadow-md ring-2 ring-white">
+                  {{ authService.currentUser()?.name?.charAt(0) | uppercase }}
+                </div>
+              </button>
+            </div>
+            
+            <div *ngIf="userMenuOpen" class="origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white dark:bg-dark-card ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden fade-in-up">
+              <a href="#" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-caramel-50 dark:hover:bg-dark-border transition-colors">Your Profile</a>
+              <a href="#" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-caramel-50 dark:hover:bg-dark-border transition-colors">Settings</a>
+              <a (click)="logout()" class="block px-4 py-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-dark-border transition-colors cursor-pointer border-t border-gray-100 dark:border-dark-border">Sign out</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="ml-4 flex items-center md:ml-6 space-x-4" *ngIf="!authService.currentUser()">
+           <button routerLink="/login" class="text-caramel-600 hover:text-caramel-700 font-medium transition-colors">Log In</button>
+           <button routerLink="/register" class="btn-primary">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<style>
+.fade-in-up {
+  animation: fadeInUp 0.2s ease-out;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>

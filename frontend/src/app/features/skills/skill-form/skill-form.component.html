@@ -1,0 +1,82 @@
+<div class="fade-in-up max-w-3xl mx-auto">
+  <div class="mb-6 flex items-center justify-between">
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">{{ isEditMode ? 'Edit Skill' : 'Add New Skill' }}</h1>
+    <button (click)="onCancel()" class="text-gray-500 hover:text-gray-700 font-medium px-4 py-2">&times; Cancel</button>
+  </div>
+
+  <div *ngIf="loading" class="flex justify-center p-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-caramel-500"></div>
+  </div>
+
+  <div class="card p-6 md:p-8" *ngIf="!loading">
+    <form [formGroup]="skillForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      
+      <!-- Basics Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Skill Name *</label>
+          <input type="text" formControlName="name" class="input-field" placeholder="e.g. Angular Standalone" 
+                 [ngClass]="{'border-red-500': skillForm.get('name')?.invalid && skillForm.get('name')?.touched}">
+          <span *ngIf="skillForm.get('name')?.invalid && skillForm.get('name')?.touched" class="text-xs text-red-500 mt-1 block">Name is required</span>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category *</label>
+          <input type="text" formControlName="category" list="categoryOptions" class="input-field" placeholder="Select or type a category">
+          <datalist id="categoryOptions">
+            <option *ngFor="let cat of categories" [value]="cat">
+          </datalist>
+        </div>
+      </div>
+
+      <!-- Details Row -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Level *</label>
+          <select formControlName="level" class="input-field">
+            <option *ngFor="let lvl of levels" [value]="lvl">{{lvl}}</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+          <select formControlName="status" class="input-field">
+            <option *ngFor="let stat of statuses" [value]="stat">{{stat}}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Deadline and Progress (only edit mode usually, but keep for now) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Target Deadline</label>
+          <input type="date" formControlName="deadline" [min]="today" class="input-field">
+        </div>
+        
+        <div *ngIf="isEditMode">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Progress (%)</label>
+          <input type="number" formControlName="progress" min="0" max="100" class="input-field">
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes / Description</label>
+        <textarea formControlName="notes" rows="3" class="input-field" placeholder="What are your goals for this skill?"></textarea>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Resources (Comma separated links/names)</label>
+        <input type="text" formControlName="resourcesText" class="input-field" placeholder="https://angular.dev, official docs">
+      </div>
+
+      <div class="flex justify-end mt-6 pt-6 border-t border-gray-100">
+        <button type="submit" [disabled]="skillForm.invalid || submitting" class="btn-primary flex items-center shadow-lg disabled:opacity-70 disabled:cursor-not-allowed px-8 py-3">
+          <span *ngIf="submitting" class="animate-spin mr-2 h-4 w-4 border-2 border-white rounded-full border-t-transparent"></span>
+          {{ isEditMode ? 'Save Changes' : 'Add Skill' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
