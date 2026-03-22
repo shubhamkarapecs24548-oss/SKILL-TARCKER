@@ -15,7 +15,11 @@ export class RegisterComponent {
   error = '';
   loading = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router) {
+    if (this.authService.currentUser()) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
 
   onSubmit() {
     this.loading = true;
