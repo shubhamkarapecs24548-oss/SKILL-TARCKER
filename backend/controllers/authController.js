@@ -33,7 +33,8 @@ const registerUser = async (req, res, next) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        token: token
       });
     } else {
       res.status(400);
@@ -54,7 +55,7 @@ const loginUser = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      const { refreshToken } = generateToken(res, user._id);
+      const { token, refreshToken } = generateToken(res, user._id);
       
       user.refreshToken = refreshToken;
       user.lastLogin = Date.now();
@@ -66,7 +67,8 @@ const loginUser = async (req, res, next) => {
         email: user.email,
         role: user.role,
         streak: user.streak,
-        longestStreak: user.longestStreak
+        longestStreak: user.longestStreak,
+        token: token
       });
     } else {
       res.status(401);

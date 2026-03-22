@@ -12,18 +12,28 @@ import { Router } from '@angular/router';
 
 // Define interceptor here directly without importing HttpClient to avoid DI issues immediately.
 export const authInterceptorFn: HttpInterceptorFn = (req, next) => {
-  const reqWithCredentials = req.clone({
+  const token = localStorage.getItem('tracker_token');
+  
+  let authReq = req.clone({
     withCredentials: true
   });
-  // We avoid directly injecting AuthService to avoid circular dependency in setup
+
+  if (token) {
+    authReq = authReq.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
   const router = inject(Router);
 
-  return next(reqWithCredentials).pipe(
+  return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Very simple interceptor
-      if (error.status === 401 && !req.url.includes('/auth/login') && !req.url.includes('/auth/refresh-token')) {
-        // Redirection should be handled gracefully, simplistic approach:
-        router.navigate(['/login']);
+      if (error.status === 401 && !req.url.includes('/auth/login')) {
+         localStorage.removeItem('tracker_token');
+         localStorage.removeItem('tracker_user');
+         router.navigate(['/login']);
       }
       return throwError(() => error);
     })
